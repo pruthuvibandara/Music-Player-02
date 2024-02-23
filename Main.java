@@ -87,7 +87,16 @@ public class Main {
             }
         }
 
-
+        SongNode getSongByName(String songName) {
+            SongNode current = head;
+            while (current != null) {
+                if (current.name.equals(songName)) {
+                    return current;
+                }
+                current = current.next;
+            }
+            return null; // Song not found
+        }
 
 
         SongNode getHead() {
@@ -235,7 +244,146 @@ public class Main {
             } while (choice != 6);
         }
 
+        void addSongToFavorites() {
+            if (home.getCurrentSong() != null) {
+                String currentSongName = home.getCurrentSong().name;
+                if (!favorites.containsSong(currentSongName)) {
+                    favorites.insertFirst(currentSongName);
+                    System.out.println("Currently playing song added to Favorites playlist.");
+                } else {
+                    System.out.println("Song is already favorite.");
+                }
+            } else {
+                System.out.println("No song is currently playing.");
+            }
+        }
 
+        void displayPlaylists() {
+            System.out.println("Available Playlists:");
+            for (int i = 0; i < playlistCount; ++i) {
+                System.out.println((i + 1) + ". Playlist " + (i + 1));
+            }
+        }
+
+        void playSong() {
+            scanner.nextLine(); // Consume newline
+            System.out.print("Enter the name of the song to play: ");
+            String songName = scanner.nextLine();
+
+            if (home.containsSong(songName)) {
+                System.out.println("Now playing: " + songName);
+                home.setCurrentSong(home.getSongByName(songName)); // Set the currently playing song
+            } else {
+                System.out.println("Song is not in the HOME playlist.");
+            }
+        }
+
+
+
+
+        void displayFavorites() {
+            int choice;
+            do {
+                System.out.println("Favorites Page:");
+                System.out.println("1. Display all favorite songs and additional options:");
+                System.out.println("2. Go to the previous menu");
+                System.out.print("Enter a number to proceed: ");
+                choice = scanner.nextInt();
+
+                switch (choice) {
+                    case 1:
+                        do {
+                            System.out.println("Now Playing: " + (favorites.getCurrentSong() != null ? favorites.getCurrentSong().name : "No song playing"));
+                            System.out.println("All favorite songs:");
+                            favorites.displaySongs();
+                            System.out.println("Additional options:");
+                            System.out.println("1. Play a song from Favorites");
+                            System.out.println("2. Play next song from Favorites");
+                            System.out.println("3. Play previous song from Favorites");
+                            System.out.println("4. Remove a song from Favorites");
+                            System.out.println("5. Go back to the main options");
+                            System.out.print("Enter a number to proceed: ");
+                            int subChoice = scanner.nextInt();
+                            switch (subChoice) {
+                                case 1:
+                                    playSongFromFavorites();
+                                    break;
+                                case 2:
+                                    favorites.playNextSong();
+                                    break;
+                                case 3:
+                                    favorites.playPreviousSong();
+                                    break;
+                                case 4:
+                                    removeSongFromFavorites();
+                                    break;
+                                case 5:
+                                    displayFavorites();
+                                    break; // Go back to the main options
+                                default:
+                                    System.out.println("Invalid choice. Please enter a valid number.");
+                                    break;
+                            }
+                        } while (choice != 5); // Stay in this section until the user chooses to go back
+                        break;
+                    case 2:
+                        displayMenu();
+                        return;
+                    default:
+                        System.out.println("Invalid choice. Please enter a valid number.");
+                        break;
+                }
+            } while (choice != 2);
+        }
+
+
+
+        void playSongFromFavorites() {
+            scanner.nextLine(); // Consume newline
+            System.out.print("Enter the name of the song to play from Favorites: ");
+            String songName = scanner.nextLine();
+
+            if (favorites.containsSong(songName)) {
+                System.out.println("Now playing from Favorites: " + songName);
+            } else {
+                System.out.println("Song is not in the Favorites playlist.");
+            }
+        }
+
+        void removeSongFromFavorites() {
+            if (favorites.getCurrentSong() != null) {
+                String currentSongName = favorites.getCurrentSong().name;
+                if (favorites.containsSong(currentSongName)) {
+                    SongNode current = favorites.getHead();
+                    while (current != null) {
+                        if (current.name.equals(currentSongName)) {
+                            // Adjust the previous and next pointers
+                            if (current.prev != null) {
+                                current.prev.next = current.next;
+                            }
+                            if (current.next != null) {
+                                current.next.prev = current.prev;
+                            }
+                            // Handle head removal
+                            if (current == favorites.getHead()) {
+                                favorites.head = current.next;
+                            }
+                            // Handle tail removal
+                            if (current.next == null) {
+                                favorites.head = current.prev;
+                            }
+                            System.out.println("Currently playing song removed from Favorites: " + currentSongName);
+                            return;
+                        }
+                        current = current.next;
+                    }
+                } else {
+                    System.out.println("Currently playing song is not in the Favorites playlist.");
+                }
+            } else {
+                System.out.println("No song is currently playing.");
+            }
+        }
 
         void addSongToPlaylist() {
             // Display currently playing song
@@ -268,7 +416,19 @@ public class Main {
             }
         }
 
+        void viewPlaylistSongs() {
+            displayPlaylists();
 
+            System.out.print("Enter the number of the playlist to view songs: ");
+            int playlistChoice = scanner.nextInt();
+
+            if (playlistChoice >= 1 && playlistChoice <= playlistCount) {
+                System.out.println("Songs in Playlist " + playlistChoice + ":");
+                playlists[playlistChoice - 1].displaySongs();
+            } else {
+                System.out.println("Invalid playlist choice.");
+            }
+        }
 
 
 
