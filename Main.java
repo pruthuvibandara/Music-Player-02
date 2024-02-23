@@ -429,19 +429,19 @@ public class Main {
             }
         }
 
-        void viewPlaylistSongs() {
-            displayPlaylists();
-
-            System.out.print("Enter the number of the playlist to view songs: ");
-            int playlistChoice = scanner.nextInt();
-
-            if (playlistChoice >= 1 && playlistChoice <= playlistCount) {
-                System.out.println("Songs in Playlist " + playlistChoice + ":");
-                playlists[playlistChoice - 1].displaySongs();
-            } else {
-                System.out.println("Invalid playlist choice.");
-            }
-        }
+//        void viewPlaylistSongs() {
+//            displayPlaylists();
+//
+//            System.out.print("Enter the number of the playlist to view songs: ");
+//            int playlistChoice = scanner.nextInt();
+//
+//            if (playlistChoice >= 1 && playlistChoice <= playlistCount) {
+//                System.out.println("Songs in Playlist " + playlistChoice + ":");
+//                playlists[playlistChoice - 1].displaySongs();
+//            } else {
+//                System.out.println("Invalid playlist choice.");
+//            }
+//        }
 
 
 
@@ -486,7 +486,57 @@ public class Main {
                 System.out.println("Maximum number of playlists reached (3).");
             }
         }
+
+        void viewPlaylistSongs() {
+            displayPlaylists();
+
+            System.out.print("Enter the number of the playlist to view songs: ");
+            int playlistChoice = scanner.nextInt();
+
+            if (playlistChoice >= 1 && playlistChoice <= playlistCount) {
+                Playlist selectedPlaylist = playlists[playlistChoice - 1];
+                int choice;
+                do {
+                    System.out.println("Songs in Playlist " + playlistChoice + ":");
+                    selectedPlaylist.displaySongs();
+                    System.out.println("Currently Playing: " + (selectedPlaylist.getCurrentSong() != null ? selectedPlaylist.getCurrentSong().name : "No song playing"));
+                    System.out.println("Additional options:");
+                    System.out.println("1. Play a song from Playlist");
+                    System.out.println("2. Play next song from Playlist");
+                    System.out.println("3. Play previous song from Playlist");
+                    System.out.println("4. Remove a song from Playlist");
+                    System.out.println("5. Go back to the main options");
+                    System.out.print("Enter a number to proceed: ");
+                    choice = scanner.nextInt();
+
+                    switch (choice) {
+                        case 1:
+                            playSongFromPlaylist(selectedPlaylist);
+                            break;
+                        case 2:
+                            selectedPlaylist.playNextSong();
+                            break;
+                        case 3:
+                            selectedPlaylist.playPreviousSong();
+                            break;
+                        case 4:
+                            removeCurrentSongFromPlaylist(selectedPlaylist);
+                            break;
+                        case 5:
+                            return; // Go back to the main options
+                        default:
+                            System.out.println("Invalid choice. Please enter a valid number.");
+                            break;
+                    }
+                } while (choice != 5);
+            } else {
+                System.out.println("Invalid playlist choice.");
+            }
+        }
+
+
     }
+
 
     public static void main(String[] args) {
         MusicPlayer player = new MusicPlayer();
