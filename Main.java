@@ -294,8 +294,6 @@ public class Main {
         }
 
 
-
-
         void displayFavorites() {
             int choice;
             do {
