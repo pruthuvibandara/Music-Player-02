@@ -177,6 +177,7 @@ public class Main {
             System.out.println("2. Favorites");
             System.out.println("3. Playlists");
             System.out.println("4. All Songs");
+            System.out.println("5. Most Played Songs");
             System.out.print("Enter a number to navigate: ");
         }
 
@@ -511,6 +512,7 @@ public class Main {
                     break;
                 case 5:
                     player.mostplayed();
+                    break;
                 default:
                     System.out.println("Invalid choice. Please enter a valid number.");
             }
