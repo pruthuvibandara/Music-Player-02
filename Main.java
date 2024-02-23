@@ -286,6 +286,7 @@ public class Main {
             if (home.containsSong(songName)) {
                 map1.playSong2(songName);
                 System.out.println("Now playing: " + songName);
+
                 home.setCurrentSong(home.getSongByName(songName)); // Set the currently playing song
             } else {
                 System.out.println("Song is not in the HOME playlist.");
