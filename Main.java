@@ -534,6 +534,51 @@ public class Main {
             }
         }
 
+        void playSongFromPlaylist(Playlist playlist) {
+            scanner.nextLine(); // Consume newline
+            System.out.print("Enter the name of the song to play from the playlist: ");
+            String songName = scanner.nextLine();
+
+            if (playlist.containsSong(songName)) {
+                System.out.println("Now playing from Playlist: " + songName);
+                map1.playSong2(songName);
+                playlist.setCurrentSong(playlist.getSongByName(songName)); // Set the currently playing song
+            } else {
+                System.out.println("Song is not in the playlist.");
+            }
+        }
+
+        void removeCurrentSongFromPlaylist(Playlist playlist) {
+            SongNode currentSong = playlist.getCurrentSong();
+            if (currentSong != null) {
+                if (playlist.getHead() == currentSong) {
+                    // If the current song is the head of the playlist
+                    playlist.head = currentSong.next;
+                    if (playlist.head != null) {
+                        playlist.head.prev = null;
+                    }
+                } else {
+                    // Adjust the previous and next pointers of the adjacent nodes
+                    currentSong.prev.next = currentSong.next;
+                    if (currentSong.next != null) {
+                        currentSong.next.prev = currentSong.prev;
+                    }
+                }
+                // Set the next song as the current song
+                if (currentSong.next != null) {
+                    playlist.setCurrentSong(currentSong.next);
+                    System.out.println("Now playing: " + currentSong.next.name);
+                } else {
+                    // If there's no next song, set the current song to null
+                    playlist.setCurrentSong(null);
+                    System.out.println("No song is currently playing from this playlist.");
+                }
+                System.out.println("Currently playing song removed from Playlist.");
+            } else {
+                System.out.println("No song is currently playing from this playlist.");
+            }
+        }
+
 
     }
 
