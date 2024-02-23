@@ -17,6 +17,7 @@ class Music_Player_02{
     static class Playlist {
         private SongNode head;
         private SongNode currentSong; // Track the current song
+        hashmap map1;
 
         Playlist() {
             this.head = null;
@@ -72,6 +73,7 @@ class Music_Player_02{
         void playNextSong() {
             if (currentSong != null && currentSong.next != null) {
                 currentSong = currentSong.next;
+                map1.playSong2(currentSong.name);
                 System.out.println("Now playing next song: " + currentSong.name);
             } else {
                 System.out.println("No next song available.");
@@ -81,6 +83,7 @@ class Music_Player_02{
         void playPreviousSong() {
             if (currentSong != null && currentSong.prev != null) {
                 currentSong = currentSong.prev;
+                map1.playSong2(currentSong.name);
                 System.out.println("Now playing previous song: " + currentSong.name);
             } else {
                 System.out.println("No previous song available.");
@@ -111,6 +114,7 @@ class Music_Player_02{
         private Playlist[] playlists;
         private int playlistCount;
         private Scanner scanner;
+        hashmap map1;
 
         MusicPlayer() {
             home = new Playlist();
@@ -122,6 +126,8 @@ class Music_Player_02{
             playlistCount = 0;
             scanner = new Scanner(System.in); // Initialize the scanner
 
+            map1 = new hashmap();
+
             // Initialize initial songs
             initializeSongs();
         }
@@ -132,6 +138,12 @@ class Music_Player_02{
             home.insertLast("Song 2");
             home.insertLast("Song 3");
             home.insertLast("Song 4");
+        }
+
+        void mostplayed()
+        {
+            //get 5 most played songs
+            map1.listMostPlayedSongs(3);
         }
 
         // Method to display all songs
@@ -286,6 +298,7 @@ class Music_Player_02{
             String songName = scanner.nextLine();
 
             if (home.containsSong(songName)) {
+                map1.playSong2(songName);
                 System.out.println("Now playing: " + songName);
             } else {
                 System.out.println("Song is not in the HOME playlist.");
@@ -373,6 +386,8 @@ class Music_Player_02{
                 case 4:
                     player.displayAllSongs();
                     break;
+                case 5:
+                    player.mostplayed();
                 default:
                     System.out.println("Invalid choice. Please enter a valid number.");
             }
