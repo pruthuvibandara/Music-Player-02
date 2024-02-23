@@ -73,7 +73,7 @@ public class Main {
         void playNextSong() {
             if (currentSong != null && currentSong.next != null) {
                 currentSong = currentSong.next;
-                map1.playSong2(currentSong.name);
+//                map1.playSong2(currentSong.name);
                 System.out.println("Now playing next song: " + currentSong.name);
             } else {
                 System.out.println("No next song available.");
@@ -83,7 +83,7 @@ public class Main {
         void playPreviousSong() {
             if (currentSong != null && currentSong.prev != null) {
                 currentSong = currentSong.prev;
-                map1.playSong2(currentSong.name);
+//                map1.playSong2(currentSong.name);
                 System.out.println("Now playing previous song: " + currentSong.name);
             } else {
                 System.out.println("No previous song available.");
